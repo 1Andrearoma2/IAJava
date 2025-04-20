@@ -40,3 +40,4 @@ build/
 ### ONNX Model ###
 .onnx
 .onnx_data
+src/main/resources/*
