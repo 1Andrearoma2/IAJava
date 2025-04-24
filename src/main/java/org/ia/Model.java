@@ -14,7 +14,7 @@ public class Model {
 
     private String vocabPath = "./TinyLlama/vocab.json";
     private String modelRelativePath = "src/main/resources/TinyLlama/onnx/decoder_model.onnx";
-    Path modelAbsolutePath = Paths.get(modelRelativePath).toAbsolutePath();
+    private Path modelAbsolutePath = Paths.get(modelRelativePath).toAbsolutePath();
     private String[] states = {"Generazione risposta .", "Generazione risposta ..", "Generazione risposta ..."};
     private Methods methods = new Methods();
     private Map<Integer, String> vocab = methods.loadVocabulary(vocabPath);
