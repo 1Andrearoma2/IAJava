@@ -101,7 +101,8 @@ class Main{
             System.out.println("Errore nell'avviare il modello. Riavviare!");
             e.printStackTrace();
         } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+            System.out.println("Errore nel trovare il modello. Verificare i file e riprovare!");
+            e.printStackTrace();
         }
     }
 }
