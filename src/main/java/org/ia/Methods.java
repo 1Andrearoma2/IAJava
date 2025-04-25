@@ -18,7 +18,7 @@ public class Methods {
     /**
      * Carica il vocabolario da un file JSON e lo converte in una mappa.</br>
      * La mappa associa ogni indice di token alla stringa corrispondente
-     * @param filePath Il percorso del file JSON contentente il vocabolario
+     * @param resourcePath Il percorso del file JSON contentente il vocabolario
      * @return Una mappa di token, in cui la chiave e' l'indice e il valore e' la stringa del token
      */
     public Map<Integer, String> loadVocabulary(String resourcePath) {
