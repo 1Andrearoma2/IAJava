@@ -22,18 +22,6 @@ public class Methods {
      * @param filePath Il percorso del file JSON contentente il vocabolario
      * @return Una mappa di token, in cui la chiave e' l'indice e il valore e' la stringa del token
      */
-//    public Map<Integer, String> loadVocabulary(String filePath){
-//        try{
-//            ObjectMapper objectMapper = new ObjectMapper();
-//            Map<String, Integer> rawVocab = objectMapper.readValue(new File(filePath), Map.class);
-//            for (Map.Entry<String, Integer> entry : rawVocab.entrySet()){
-//                vocabMap.put(entry.getValue(), entry.getKey());
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return vocabMap;
-//    }
     public Map<Integer, String> loadVocabulary(String resourcePath) {
         try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(resourcePath)) {
             if (inputStream == null) {
