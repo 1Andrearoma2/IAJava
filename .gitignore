@@ -1,4 +1,4 @@
-    target/
+
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
@@ -40,3 +40,4 @@ build/
 ### ONNX Model ###
 src/main/resources/TinyLlama/onnx/*.onnx
 src/main/resources/TinyLlama/onnx/*.onnx_data
+target/*
