@@ -38,6 +38,5 @@ build/
 .DS_Store
 
 ### ONNX Model ###
-.onnx
-.onnx_data
-src/main/resources/onnx/*
+src/main/resources/onnx/*.onnx
+src/main/resources/onnx/*.onnx_data
