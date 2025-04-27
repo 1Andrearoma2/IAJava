@@ -1,6 +1,9 @@
 package org.ia;
 
 import ai.onnxruntime.*;
+
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.*;
 import java.util.*;
 
@@ -12,8 +15,7 @@ public class Model {
 
     // private String basePrompt = "What follows is a convertation between a user and a helpful, very knowledgeable AI assistant, answer to the following question. ";
     private String vocabPath = "TinyLlama/vocab.json";
-    private String modelRelativePath = "src/main/resources/TinyLlama/onnx/decoder_model.onnx";
-    private Path modelAbsolutePath = Paths.get(modelRelativePath).toAbsolutePath();
+    private String modelResourcePath = "TinyLlama/onnx/decoder_model.onnx";
     private String[] states = {"Generazione risposta .", "Generazione risposta ..", "Generazione risposta ..."};
     private Methods methods = new Methods();
     private Map<Integer, String> vocab = methods.loadVocabulary(vocabPath);
@@ -33,6 +35,15 @@ public class Model {
      */
     public void startModel(){
         try {
+            ClassLoader classLoader = getClass().getClassLoader();
+            URL resourceUrl = classLoader.getResource(modelResourcePath);
+
+            if (resourceUrl == null) {
+                System.err.println("Errore: modello ONNX non trovato nel classpath!");
+                return;
+            }
+
+            Path modelAbsolutePath = Paths.get(resourceUrl.toURI());
             Scanner input = new Scanner(System.in);
             System.out.print("Inserire il prompt (solo inglese): ");
             userPrompt = input.nextLine();
@@ -50,7 +61,7 @@ public class Model {
             OrtEnvironment env = OrtEnvironment.getEnvironment();
             OrtSession.SessionOptions options = new OrtSession.SessionOptions();
 
-            OrtSession session = env.createSession(String.valueOf(modelAbsolutePath), options);
+            OrtSession session = env.createSession(modelAbsolutePath.toString(), options);
 
             for (int step = 0; step < maxToken; step++) {
                 List<Integer> inputTokens = new ArrayList<>(promptToken);
@@ -88,6 +99,9 @@ public class Model {
             generatedText = generatedText.replace("0x0A", " ").replace("Ċ", " ").replace("Ġ", " ").replace("< >", " ");
             System.out.println("\nDomanda: " + userPrompt + "\nRisposta: " + generatedText);
         } catch (OrtException e) {
+            System.err.println("Errore nell'avviare il modello. Riavviare!");
+            e.printStackTrace();
+        } catch (URISyntaxException e){
             System.err.println("Errore nell'avviare il modello. Riavviare!");
             e.printStackTrace();
         }
