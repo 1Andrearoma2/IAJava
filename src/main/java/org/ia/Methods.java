@@ -46,7 +46,7 @@ public class Methods {
      * @return Un array di probabilita' corrispondente ai logits di ingresso
      */
     public float[] applySoftmax(float[] logits){
-        float maxLogit = Float.NEGATIVE_INFINITY;
+        float maxLogit = Float.NEGATIVE_INFINITY; // Inizializza maxLogit a -infinito in modo che nessun numero possibile sia minore di lui
         for (float logit : logits){
             maxLogit = Math.max(maxLogit, logit);
         }

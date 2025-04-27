@@ -10,6 +10,7 @@ import java.util.*;
  */
 public class Model {
 
+    // private String basePrompt = "What follows is a convertation between a user and a helpful, very knowledgeable AI assistant, answer to the following question. ";
     private String vocabPath = "TinyLlama/vocab.json";
     private String modelRelativePath = "src/main/resources/TinyLlama/onnx/decoder_model.onnx";
     private Path modelAbsolutePath = Paths.get(modelRelativePath).toAbsolutePath();
@@ -82,7 +83,6 @@ public class Model {
                 int i = (step + 1) % states.length;
                 System.out.print("\r" + states[i]);
 
-                if (nextToken == 50256) break;
             }
             String generatedText = tokenizer.decodeTokens(answerTokens);
             generatedText = generatedText.replace("0x0A", " ").replace("Ċ", " ").replace("Ġ", " ").replace("< >", " ");
