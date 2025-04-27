@@ -1,0 +1,1 @@
+Scaricare i due file inerenti al modello dell'Intelligenza Artificiale da questo <a href="https://drive.google.com/drive/folders/1678tKL9j675FL3XV7AgjUdPitf7GHbsx?usp=drive_link" >link</a> e inserirli in una cartella chiamata "onnx" nel percorso src/main/resources/TinyLlama
