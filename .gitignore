@@ -38,6 +38,6 @@ build/
 .DS_Store
 
 ### ONNX Model ###
-src/main/resources/TinyLlama/onnx/*.onnx
-src/main/resources/TinyLlama/onnx/*.onnx_data
+res/TinyLlama/onnx/*.onnx
+res/TinyLlama/onnx/*.onnx_data
 target/*
