@@ -2,6 +2,7 @@ package org.ia;
 
 import ai.onnxruntime.*;
 
+import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.*;
@@ -14,9 +15,9 @@ import java.util.*;
 public class Model {
 
     // private String basePrompt = "What follows is a convertation between a user and a helpful, very knowledgeable AI assistant, answer to the following question. ";
-    private String vocabPath = "TinyLlama/vocab.json";
-    private String modelResourcePath = "TinyLlama/onnx/decoder_model.onnx";
-    private String[] states = {"Generazione risposta .", "Generazione risposta ..", "Generazione risposta ..."};
+    private String resPath = "res" + File.separator + "TinyLlama" + File.separator;
+    private String vocabPath = resPath + "vocab.json";
+    private String modelResourcePath = resPath + "onnx" + File.separator + "decoder_model.onnx";
     private Methods methods = new Methods();
     private Map<Integer, String> vocab = methods.loadVocabulary(vocabPath);
     private Tokenizer tokenizer = new Tokenizer(vocab);
@@ -35,15 +36,7 @@ public class Model {
      */
     public void startModel(){
         try {
-            ClassLoader classLoader = getClass().getClassLoader();
-            URL resourceUrl = classLoader.getResource(modelResourcePath);
-
-            if (resourceUrl == null) {
-                System.err.println("Errore: modello ONNX non trovato nel classpath!");
-                return;
-            }
-
-            Path modelAbsolutePath = Paths.get(resourceUrl.toURI());
+            Path modelAbsolutePath = Paths.get(modelResourcePath).toAbsolutePath();
             Scanner input = new Scanner(System.in);
             System.out.print("Inserire il prompt (solo inglese): ");
             userPrompt = input.nextLine();
@@ -91,17 +84,14 @@ public class Model {
                 int nextToken = methods.argmax(methods.applySoftmax(logits));
                 answerTokens.add(nextToken);
 
-                int i = (step + 1) % states.length;
-                System.out.print("\r" + states[i]);
+                int progress = (int) (((step + 1) / (double) maxToken) * 100);
+                System.out.print("\rGenerazione: " + progress + "%");
 
             }
             String generatedText = tokenizer.decodeTokens(answerTokens);
             generatedText = generatedText.replace("0x0A", " ").replace("Ċ", " ").replace("Ġ", " ").replace("< >", " ");
             System.out.println("\nDomanda: " + userPrompt + "\nRisposta: " + generatedText);
         } catch (OrtException e) {
-            System.err.println("Errore nell'avviare il modello. Riavviare!");
-            e.printStackTrace();
-        } catch (URISyntaxException e){
             System.err.println("Errore nell'avviare il modello. Riavviare!");
             e.printStackTrace();
         }

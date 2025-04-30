@@ -1,9 +1,8 @@
 package org.ia;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,13 +21,9 @@ public class Methods {
      * @return Una mappa di token, in cui la chiave e' l'indice e il valore e' la stringa del token
      */
     public Map<Integer, String> loadVocabulary(String resourcePath) {
-        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(resourcePath)) {
-            if (inputStream == null) {
-                throw new FileNotFoundException("Il file " + resourcePath + " non è stato trovato nel classpath.");
-            }
-
-            ObjectMapper objectMapper = new ObjectMapper();
-            Map<String, Integer> rawVocab = objectMapper.readValue(inputStream, Map.class);
+        try (InputStream inputStream = new FileInputStream(resourcePath)) {
+            ObjectMapper om = new ObjectMapper();
+            Map<String, Integer> rawVocab = om.readValue(inputStream, Map.class);
 
             for (Map.Entry<String, Integer> entry : rawVocab.entrySet()) {
                 vocabMap.put(entry.getValue(), entry.getKey());
@@ -46,7 +41,7 @@ public class Methods {
      * @return Un array di probabilita' corrispondente ai logits di ingresso
      */
     public float[] applySoftmax(float[] logits){
-        float maxLogit = Float.NEGATIVE_INFINITY; // Inizializza maxLogit a -infinito in modo che nessun numero possibile sia minore di lui
+        float maxLogit = Float.NEGATIVE_INFINITY;
         for (float logit : logits){
             maxLogit = Math.max(maxLogit, logit);
         }
